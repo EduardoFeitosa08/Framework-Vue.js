@@ -14,11 +14,8 @@ import dogs from './components/icons/dogs.vue';
     </div>
   </header>
 
-  <main>
-    <div id="container" class="container">
-      <dogs />
-    </div>
-  </main>
+  
+  <dogs />
 
 </template>
 

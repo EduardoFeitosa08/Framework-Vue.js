@@ -15,18 +15,16 @@ async function buscarImagens(raca) {
     return imagens.message
 }
 
-function exibirCachorro(cachorro){
+function exibirCachorro(cachorro) {
+    const quadro = document.createElement('div')
     const img = document.createElement('img')
 
     img.src = cachorro
 
-    container.appendChild(img)
-    main.appendChild(container)
-
-    img.addEventListener('click', function(){
-        window.open(cachorro)
-    })
-    
+    quadro.appendChild(img)
+    quadro.classList.add('quadro')
+    console.log(quadro)
+    container.appendChild(quadro)
 }
 
 inputPesquisar.addEventListener('keydown', async (evento) => {
@@ -34,7 +32,7 @@ inputPesquisar.addEventListener('keydown', async (evento) => {
     if (evento.key === 'Enter' || evento.keyCode === 13) {
         if (inputPesquisar.value != '') {
             const imagens = await buscarImagens(inputPesquisar.value)
-            header.textContent = ''
+            header.style.display = 'none'
             imagens.forEach(img => exibirCachorro(img))
         } else {
             alert('Digite uma raça existente no campo de pesquisa')
@@ -46,7 +44,7 @@ inputPesquisar.addEventListener('keydown', async (evento) => {
 btnPesquisar.addEventListener('click', async () => {
     if (inputPesquisar.value != '') {
         const imagens = await buscarImagens(inputPesquisar.value)
-        header.textContent = ''
+        header.style.display = 'none'
         imagens.forEach(img => exibirCachorro(img))
     } else {
         alert('Digite uma raça existente no campo de pesquisa')
@@ -56,9 +54,13 @@ btnPesquisar.addEventListener('click', async () => {
 </script>
 
 <template>
-    <div>
-        a
-    </div>
+    <main>
+        <div class="container" id="container">
+            <!-- <div class="quadro">
+            
+        </div> -->
+        </div>
+    </main>
 
 </template>
 
@@ -128,5 +130,24 @@ header {
 
 .btn_buscar:hover {
     background-color: lightgray;
+}
+
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-top: 5%;
+    gap: 10px;
+}
+
+.quadro {
+    width: 20%;
+    height: 45%;
+}
+
+.quadro img {
+    width: auto;
+    height: 100%;
 }
 </style>
