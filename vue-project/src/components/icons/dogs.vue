@@ -5,17 +5,16 @@ const btnPesquisar = document.getElementById('btnPesquisar')
 
 const header = document.querySelector('header')
 const main = document.querySelector('main')
-const container = document.getElementById('container')
 
 async function buscarImagens(raca) {
     const url = `https://dog.ceo/api/breed/${raca}/images`
     const response = await fetch(url)
     const imagens = await response.json()
-    console.log(imagens.message)
     return imagens.message
 }
 
 function exibirCachorro(cachorro) {
+    const container = document.getElementById('containerImagens')
     const quadro = document.createElement('div')
     const img = document.createElement('img')
 
@@ -23,17 +22,19 @@ function exibirCachorro(cachorro) {
 
     quadro.appendChild(img)
     quadro.classList.add('quadro')
-    console.log(quadro)
     container.appendChild(quadro)
 }
 
 inputPesquisar.addEventListener('keydown', async (evento) => {
+    const h2Raca = document.getElementById('racaEscolhida')
 
     if (evento.key === 'Enter' || evento.keyCode === 13) {
         if (inputPesquisar.value != '') {
             const imagens = await buscarImagens(inputPesquisar.value)
+            console.log(imagens)
             header.style.display = 'none'
             imagens.forEach(img => exibirCachorro(img))
+            h2Raca.textContent = inputPesquisar.value
         } else {
             alert('Digite uma raça existente no campo de pesquisa')
         }
@@ -42,10 +43,12 @@ inputPesquisar.addEventListener('keydown', async (evento) => {
 })
 
 btnPesquisar.addEventListener('click', async () => {
+    const h2Raca = document.getElementById('racaEscolhida')
     if (inputPesquisar.value != '') {
         const imagens = await buscarImagens(inputPesquisar.value)
         header.style.display = 'none'
         imagens.forEach(img => exibirCachorro(img))
+        h2Raca.textContent = inputPesquisar.value
     } else {
         alert('Digite uma raça existente no campo de pesquisa')
     }
@@ -55,7 +58,8 @@ btnPesquisar.addEventListener('click', async () => {
 
 <template>
     <main>
-        <div class="container" id="container">
+        <h2 id="racaEscolhida"></h2>
+        <div class="container" id="containerImagens">
             <!-- <div class="quadro">
             
         </div> -->
@@ -139,6 +143,8 @@ header {
     justify-content: space-between;
     padding-top: 5%;
     gap: 10px;
+    height: 100%;
+    width: 100%;
 }
 
 .quadro {
@@ -147,7 +153,6 @@ header {
 }
 
 .quadro img {
-    width: auto;
-    height: 100%;
+    width: fit-content;
 }
 </style>
