@@ -10,7 +10,12 @@ async function buscarImagens(raca) {
     const url = `https://dog.ceo/api/breed/${raca}/images`
     const response = await fetch(url)
     const imagens = await response.json()
-    return imagens.message
+    if(imagens.status == 'success'){
+        return imagens.message
+    }else{
+        return false
+    }
+    
 }
 
 function exibirCachorro(cachorro) {
@@ -31,10 +36,13 @@ inputPesquisar.addEventListener('keydown', async (evento) => {
     if (evento.key === 'Enter' || evento.keyCode === 13) {
         if (inputPesquisar.value != '') {
             const imagens = await buscarImagens(inputPesquisar.value)
-            console.log(imagens)
-            header.style.display = 'none'
-            imagens.forEach(img => exibirCachorro(img))
-            h2Raca.textContent = inputPesquisar.value
+            if(imagens){
+                header.style.display = 'none'
+                imagens.forEach(img => exibirCachorro(img))
+                h2Raca.textContent = inputPesquisar.value
+            }else{
+                alert('Não foi possivel encontrar a raça digitada')
+            }
         } else {
             alert('Digite uma raça existente no campo de pesquisa')
         }
@@ -46,9 +54,13 @@ btnPesquisar.addEventListener('click', async () => {
     const h2Raca = document.getElementById('racaEscolhida')
     if (inputPesquisar.value != '') {
         const imagens = await buscarImagens(inputPesquisar.value)
-        header.style.display = 'none'
-        imagens.forEach(img => exibirCachorro(img))
-        h2Raca.textContent = inputPesquisar.value
+            if(imagens){
+                header.style.display = 'none'
+                imagens.forEach(img => exibirCachorro(img))
+                h2Raca.textContent = inputPesquisar.value
+            }else{
+                alert('Não foi possivel encontrar a raça digitada')
+            }
     } else {
         alert('Digite uma raça existente no campo de pesquisa')
     }
@@ -60,9 +72,7 @@ btnPesquisar.addEventListener('click', async () => {
     <main>
         <h2 id="racaEscolhida"></h2>
         <div class="container" id="containerImagens">
-            <!-- <div class="quadro">
-            
-        </div> -->
+
         </div>
     </main>
 
@@ -136,23 +146,31 @@ header {
     background-color: lightgray;
 }
 
+main h2{
+    padding-top: 5vh;
+    place-self: center;
+    font-weight: 700;
+    font-size: 30px;
+}
 
 .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    padding-top: 5%;
+    justify-content: center;
+    padding-top: 1%;
     gap: 10px;
-    height: 100%;
     width: 100%;
+    height: auto;
 }
 
-.quadro {
-    width: 20%;
-    height: 45%;
+.container :deep(.quadro) {
+    width: 250px;
+    height: 250px;
 }
 
-.quadro img {
-    width: fit-content;
+.container :deep(.quadro img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 </style>
