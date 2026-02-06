@@ -1,19 +1,30 @@
 <script setup>
 
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+const router = useRouter();
+const cachorros = ref([]);
+const raca = route.params.raca;
+
 const inputPesquisar = document.getElementById('inputPesquisar')
 const btnPesquisar = document.getElementById('btnPesquisar')
 
 const header = document.querySelector('header')
-const main = document.querySelector('main')
 
-async function buscarImagens(raca) {
-    const url = `https://dog.ceo/api/breed/${raca}/images`
-    const response = await fetch(url)
-    const imagens = await response.json()
-    if(imagens.status == 'success'){
-        return imagens.message
-    }else{
-        return false
+async function buscarImagens() {
+    try {
+        const url = `https://dog.ceo/api/breed/${raca}/images`
+        const response = await fetch(url)
+        const imagens = await response.json()
+        if(imagens.status === 'success'){
+            return imagens.message
+        }else{
+            router.push('/')
+        }
+    } catch (error) {
+        router.push('/')
     }
     
 }
@@ -24,55 +35,39 @@ function exibirCachorro(cachorro) {
     const img = document.createElement('img')
 
     img.src = cachorro
-
     quadro.appendChild(img)
     quadro.classList.add('quadro')
     container.appendChild(quadro)
 }
 
-inputPesquisar.addEventListener('keydown', async (evento) => {
+async function exibirCachorrosPesquisa() {
     const h2Raca = document.getElementById('racaEscolhida')
+    const main = document.querySelector('main')
 
-    if (evento.key === 'Enter' || evento.keyCode === 13) {
-        if (inputPesquisar.value != '') {
-            const imagens = await buscarImagens(inputPesquisar.value)
-            if(imagens){
-                header.style.display = 'none'
-                imagens.forEach(img => exibirCachorro(img))
-                h2Raca.textContent = inputPesquisar.value
-            }else{
-                alert('Não foi possivel encontrar a raça digitada')
-            }
-        } else {
-            alert('Digite uma raça existente no campo de pesquisa')
-        }
+    const imagens = await buscarImagens()
+    if(imagens){
+        imagens.forEach(img => exibirCachorro(img))
+        h2Raca.textContent = raca
+        main.style.display = 'block'
+    }else{
+        
     }
+}
 
-})
-
-btnPesquisar.addEventListener('click', async () => {
-    const h2Raca = document.getElementById('racaEscolhida')
-    if (inputPesquisar.value != '') {
-        const imagens = await buscarImagens(inputPesquisar.value)
-            if(imagens){
-                header.style.display = 'none'
-                imagens.forEach(img => exibirCachorro(img))
-                h2Raca.textContent = inputPesquisar.value
-            }else{
-                alert('Não foi possivel encontrar a raça digitada')
-            }
-    } else {
-        alert('Digite uma raça existente no campo de pesquisa')
-    }
-})
+onMounted(exibirCachorrosPesquisa)
 
 </script>
 
 <template>
     <main>
-        <h2 id="racaEscolhida"></h2>
+        <div class="container_superior" id="containerSuperior">
+            <button @click="router.push('/')"><img src="../../img/voltar.png" alt=""></button>
+            <h2 id="racaEscolhida">{{ raca }}</h2>
+        </div>
         <div class="container" id="containerImagens">
-
+            <div v-for="url in cachorros" :key="url" :href="url" target="_blank">
+                <img :src="url" />
+            </div>
         </div>
     </main>
 
@@ -144,6 +139,35 @@ header {
 
 .btn_buscar:hover {
     background-color: lightgray;
+}
+
+.container_superior{
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.container_superior button{
+    background-color: transparent;
+    width: 3vw;
+    height: 5vh;
+    border: none;
+    place-self: center;
+}
+
+.container_superior button img{
+    width: 100%;
+    height: 100%;
+}
+
+.container_superior button:hover{
+    background-color: lightgray;
+    border: 1px solid gray;
+    border-radius: 20px;
+}
+
+main{
+    display: none;
 }
 
 main h2{
