@@ -19,10 +19,10 @@ function irParaResultado() {
 
 <template>
   <header>
-    <img class="logo" src="../../img/logoDogs.png" alt="">
+    <img class="logo" src="../assets/logoDogs.png" alt="">
     <div class="container_pesquisar">
       <div class="pesquisar">
-        <img src="../img/pesquisar.svg" alt="">
+        <img src="../assets/pesquisar.svg" alt="">
         <input v-model="cachorroPesquisado" type="text" placeholder="Pesquise uma Raça" id="inputPesquisar" @keydown.enter=irParaResultado>
       </div>
       <button id="btnPesquisar" class="btn_buscar" @click="irParaResultado">Buscar</button>

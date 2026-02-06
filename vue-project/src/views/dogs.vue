@@ -8,11 +8,6 @@ const router = useRouter();
 const cachorros = ref([]);
 const raca = route.params.raca;
 
-const inputPesquisar = document.getElementById('inputPesquisar')
-const btnPesquisar = document.getElementById('btnPesquisar')
-
-const header = document.querySelector('header')
-
 async function buscarImagens() {
     try {
         const url = `https://dog.ceo/api/breed/${raca}/images`
@@ -61,7 +56,7 @@ onMounted(exibirCachorrosPesquisa)
 <template>
     <main>
         <div class="container_superior" id="containerSuperior">
-            <button @click="router.push('/')"><img src="../../img/voltar.png" alt=""></button>
+            <button @click="router.push('/')"><img src="../assets/voltar.png" alt=""></button>
             <h2 id="racaEscolhida">{{ raca }}</h2>
         </div>
         <div class="container" id="containerImagens">
@@ -74,73 +69,6 @@ onMounted(exibirCachorrosPesquisa)
 </template>
 
 <style scoped>
-header {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1vh;
-}
-
-.logo {
-    width: auto;
-    height: 25vh;
-}
-
-.container_pesquisar {
-    display: flex;
-    width: 80%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 1vw;
-}
-
-.pesquisar {
-    display: flex;
-    justify-content: space-between;
-    place-self: center;
-    border: 2px solid black;
-    border-radius: 25px;
-    padding: .5vh .5vw;
-    width: 40%;
-    height: 3vh;
-    gap: 15px;
-}
-
-.pesquisar img {
-    width: 2vh;
-}
-
-.pesquisar input {
-    width: 100%;
-    border-bottom-right-radius: 25px;
-    border-top-right-radius: 25px;
-    border: none;
-}
-
-.pesquisar input:focus {
-    outline: none;
-    font-size: 14px;
-}
-
-.pesquisar input:focus::placeholder {
-    color: transparent;
-}
-
-.btn_buscar {
-    padding: 1vh 1vw;
-    border-radius: 25px;
-    background-color: white;
-    font-weight: 700;
-    font-style: bold;
-}
-
-.btn_buscar:hover {
-    background-color: lightgray;
-}
-
 .container_superior{
     display: flex;
     width: 50%;
